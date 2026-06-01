@@ -1,6 +1,6 @@
 # retry_easy
 
-[![PyPI version](https://badge.fury.io/py/retry_easy.svg)](https://pypi.org/project/retry_easy/)
+[![PyPI version](https://badge.fury.io/py/retry_easy.svg)](https://pypi.org/project/retry-easy/)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
 [![CI](https://github.com/undescoreF/retry_easy/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/retry_easy/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
