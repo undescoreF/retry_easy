@@ -21,7 +21,7 @@ if sys.version_info >= (3, 10):
 else:
     from typing_extensions import ParamSpec, TypeVar
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = ["retry"]
 
 P = ParamSpec("P")

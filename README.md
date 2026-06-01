@@ -98,7 +98,7 @@ This library targets the common use case: simple, readable retry logic without e
 ## Development
 
 ```bash
-git clone https://github.com/yourusername/retry_easy.git
+git clone https://github.com/undescoreF/retry_easy.git
 cd retry_easy
 
 pip install -e ".[dev]"
