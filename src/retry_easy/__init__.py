@@ -14,7 +14,7 @@ import inspect
 import random
 import sys
 import time
-from typing import Callable
+from typing import Callable, cast
 
 if sys.version_info >= (3, 10):
     from typing import ParamSpec, TypeVar
@@ -98,7 +98,9 @@ def retry(
         raise TypeError("exceptions must be a tuple of exception classes")
     if not exceptions:
         raise ValueError("exceptions must not be empty")
-    if not all(inspect.isclass(exc) and issubclass(exc, Exception) for exc in exceptions):
+    if not all(
+        inspect.isclass(exc) and issubclass(exc, Exception) for exc in exceptions
+    ):
         raise TypeError("exceptions must contain only Exception subclasses")
 
     # --- Decorator ---
@@ -115,7 +117,7 @@ def retry(
 
             for attempt in range(attempts):
                 try:
-                    return await func(*args, **kwargs)
+                    return await func(*args, **kwargs)  # type: ignore[misc, no-any-return]
                 except asyncio.CancelledError:
                     raise  # Never retry cancellation
                 except exceptions as exc:
@@ -146,6 +148,6 @@ def retry(
                 raise last_exc
             raise RuntimeError("Retry loop finished without an exception")
 
-        return async_wrapper if is_async else sync_wrapper
+        return cast(Callable[P, R], async_wrapper if is_async else sync_wrapper)
 
     return decorator
