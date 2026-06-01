@@ -14,7 +14,7 @@ import inspect
 import random
 import sys
 import time
-from typing import Callable, Optional
+from typing import Callable
 
 if sys.version_info >= (3, 10):
     from typing import ParamSpec, TypeVar
@@ -113,7 +113,7 @@ def retry(
         @functools.wraps(func)
         async def async_wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             current_delay = delay
-            last_exc: Optional[Exception] = None
+            last_exc: Exception | None = None
 
             for attempt in range(attempts):
                 try:
@@ -128,12 +128,12 @@ def retry(
 
             if last_exc is not None:
                 raise last_exc
-            raise RuntimeError("Retry loop finished without an exception")  # Defensive
+            raise RuntimeError("Retry loop finished without an exception")
 
         @functools.wraps(func)
         def sync_wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             current_delay = delay
-            last_exc: Optional[Exception] = None
+            last_exc: Exception | None = None
 
             for attempt in range(attempts):
                 try:
@@ -146,7 +146,7 @@ def retry(
 
             if last_exc is not None:
                 raise last_exc
-            raise RuntimeError("Retry loop finished without an exception")  # Defensive
+            raise RuntimeError("Retry loop finished without an exception")
 
         return async_wrapper if is_async else sync_wrapper
 

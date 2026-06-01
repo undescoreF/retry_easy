@@ -82,11 +82,10 @@ def test_sync_exception_filter():
 
     with pytest.raises(TypeError):
         func()
-    assert calls == 1  # TypeError is not retried
+    assert calls == 1
 
 def test_sync_preserves_metadata():
     def my_func():
-        """Original docstring."""
         pass
 
     decorated = retry(attempts=1)(my_func)
@@ -111,7 +110,6 @@ def test_sync_backoff_timing():
         func()
     elapsed = time.monotonic() - start
 
-    # Expected delays: 0.1s + 0.2s = 0.3s
     assert elapsed == pytest.approx(0.3, abs=0.05)
 
 # =============================================================================
@@ -121,7 +119,6 @@ def test_sync_backoff_timing():
 def test_sync_jitter_bounds():
     calls = 0
 
-    # delay=0.1, jitter=0.1 -> each sleep falls between 0.1 and 0.2
     @retry(attempts=3, delay=0.1, jitter=0.1)
     def func():
         nonlocal calls
@@ -133,7 +130,6 @@ def test_sync_jitter_bounds():
         func()
     elapsed = time.monotonic() - start
 
-    # Min total: 0.1 + 0.1 = 0.2 | Max total: 0.2 + 0.2 = 0.4
     assert 0.15 <= elapsed <= 0.45
 
 # =============================================================================
@@ -202,16 +198,16 @@ async def test_async_cancelled_error_not_retried():
     async def func():
         nonlocal calls
         calls += 1
-        await asyncio.sleep(10)  # Simulate long-running operation
+        await asyncio.sleep(10)
 
     task = asyncio.create_task(func())
-    await asyncio.sleep(0.05)  # Allow task to start
+    await asyncio.sleep(0.05)
     task.cancel()
 
     with pytest.raises(asyncio.CancelledError):
         await task
 
-    assert calls == 1  # Only one execution, no retries
+    assert calls == 1
 
 # =============================================================================
 # EDGE CASES & TYPE PRESERVATION
@@ -233,7 +229,7 @@ def test_single_attempt_no_sleep():
     elapsed = time.monotonic() - start
 
     assert calls == 1
-    assert elapsed < 0.05  # No delay should occur
+    assert elapsed < 0.05
 
 def test_backoff_zero():
     """backoff=0.0 should zero out the delay after the first sleep."""
@@ -250,7 +246,6 @@ def test_backoff_zero():
         func()
     elapsed = time.monotonic() - start
 
-    # Only the first sleep takes ~0.1s. Subsequent sleeps are 0.0s due to backoff=0.0
     assert elapsed == pytest.approx(0.1, abs=0.05)
 
 def test_sync_remains_sync():
