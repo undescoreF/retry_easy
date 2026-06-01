@@ -98,9 +98,7 @@ def retry(
         raise TypeError("exceptions must be a tuple of exception classes")
     if not exceptions:
         raise ValueError("exceptions must not be empty")
-    if not all(
-        inspect.isclass(exc) and issubclass(exc, Exception) for exc in exceptions
-    ):
+    if not all(inspect.isclass(exc) and issubclass(exc, Exception) for exc in exceptions):
         raise TypeError("exceptions must contain only Exception subclasses")
 
     # --- Decorator ---
